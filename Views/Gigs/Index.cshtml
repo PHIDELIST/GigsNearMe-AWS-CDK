@@ -1,0 +1,51 @@
+﻿@model IEnumerable<GigsNearMe.Models.Gig>
+
+@{
+    ViewData["Title"] = "Gigs";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Artist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Venue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tour)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist.ArtistID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Venue.VenueID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tour.TourID)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.GigID">Details</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,31 @@
+﻿@model TourViewModel
+
+@{
+    ViewData["Title"] = "Tour Details";
+}
+
+<div class="ml-3">
+    <h3>Tour details for @Model.TourTitle tour</h3>
+
+    <div class="row">
+        <ul class="list-group w-50">
+            @foreach (var gig in Model.Gigs.OrderBy(g => g.Date))
+            {
+            <li class="list-group-item list-group-item-light">
+                <div class="d-flex justify-content-between">
+                    <h6 class="mb-1">@gig.Venue.Location</h6>
+                    <!-- workflow simulating ticket purchase to come in future update -->
+                    <a class="btn btn-primary btn-sm disabled" href="#" role="button">Get tickets</a>
+                </div>
+                <small class="text-muted">@gig.Date.ToString("dddd MMMM dd, yyyy")</small>
+            </li>
+            }
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            @Html.ActionLink("Back to Upcoming Tours", "Index", "Home")
+        </div>
+    </div>
+</div>

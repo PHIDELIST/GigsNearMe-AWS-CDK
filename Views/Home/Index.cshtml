@@ -1,0 +1,37 @@
+﻿@model IEnumerable<ArtistViewModel>
+
+@{
+    ViewBag.Title = "GigsNearMe! Home";
+}
+
+<h3>Upcoming Tours!</h3>
+
+<div class="upcoming-tours-list">
+
+    @foreach (var item in Model)
+    {
+        <div class="row offset-sm-1 justify-content-start align-items-start">
+
+            <div class="col-3">
+                <h4>@item.Name</h4>
+            </div>
+
+            <div class="col-9">
+                <div class="card-deck">
+                    @foreach (var tour in item.Tours)
+                    {
+                    <div class="col-sm-6">
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">@tour.Name</h5>
+                                <p class="card-text">Starts @tour.Start.ToString("dddd MMMM dd, yyyy").</p>
+                                @Html.ActionLink("Find out more...", "Details", "Tours", new { id = tour.TourID }, null)
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

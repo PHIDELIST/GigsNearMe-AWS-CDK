@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GigsNearMe.Models.Tour>
+
+@{
+    ViewData["Title"] = "Tours";
+}
+
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Artist", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Tour
+        </th>
+        <th>
+            Starts
+        </th>
+        <th>
+            Ends
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Artist.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Start)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.TourID }) |
+            </td>
+        </tr>
+    }
+
+</table>

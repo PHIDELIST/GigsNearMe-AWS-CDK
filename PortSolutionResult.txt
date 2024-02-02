@@ -1,0 +1,87 @@
+==========
+References
+==========
+GigsNearMe.Contracts
+GigsNearMe.Models
+System.Threading.Tasks
+GigsNearMe.Controllers
+Microsoft.AspNetCore.Mvc
+System
+System.Linq
+Microsoft.EntityFrameworkCore
+System.Diagnostics
+AutoMapper
+System.Collections.Generic
+GigsNearMe.ViewModels
+GigsNearMe.Data
+Microsoft.EntityFrameworkCore.Metadata.Builders
+GigsNearMe
+Microsoft.AspNetCore.Hosting
+Microsoft.AspNetCore.Builder
+Microsoft.Extensions.DependencyInjection
+GigsNearMe.Migrations
+Microsoft.EntityFrameworkCore.Migrations
+Microsoft.EntityFrameworkCore.Migrations.Operations.Builders
+Microsoft.EntityFrameworkCore.Infrastructure
+Microsoft.EntityFrameworkCore.Metadata
+System.ComponentModel.DataAnnotations
+System.Reflection
+Microsoft.Extensions.Hosting
+GigsNearMe.Repository
+Microsoft.Extensions.Configuration
+Microsoft.AspNetCore.Identity
+System.Linq.Expressions
+Microsoft.Extensions.Logging
+Microsoft.EntityFrameworkCore.Storage.ValueConversion
+project.all
+
+===============
+DownloadedFiles
+===============
+project.all.json
+
+==============
+ProjectResults
+==============
+----------------------
+Showing results for: C:\Users\PhidelistOluochOmuya\Desktop\GigsNearMe-AWS-CDK\GigsNearMe.csproj
+----------------------
+---------------------------
+Target Versions:
+---------------------------
+net7.0
+---------------------------
+Source Versions:
+---------------------------
+net48
+---------------------------
+Upgrade packages:
+---------------------------
+---------------------------
+Action packages:
+---------------------------
+
+----------------------
+Showing results for: C:\Users\PhidelistOluochOmuya\Desktop\GigsNearMe-AWS-CDK\GigsNearMe.csproj
+----------------------
+---------------------------
+Target Versions:
+---------------------------
+net7.0
+---------------------------
+Source Versions:
+---------------------------
+net48
+---------------------------
+Upgrade packages:
+---------------------------
+---------------------------
+Action packages:
+---------------------------
+
+
+===========
+BuildErrors
+===========
+
+
