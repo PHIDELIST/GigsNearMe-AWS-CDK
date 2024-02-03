@@ -1,5 +1,6 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.SSM;
 using Constructs;
 
 namespace GigsNearMeInfra
@@ -28,6 +29,11 @@ namespace GigsNearMeInfra
                             Name = "GigsNearMePrivate"
                         }
                     }
+            });
+            new StringParameter(this, "GigsNearMeDbSecretsParameter", new StringParameterProps
+            {
+                ParameterName = "gigsnearme/dbsecretsname",
+                StringValue = db.Secret.SecretName
             });
         }
     }
