@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace GigsNearMe
 {
@@ -12,9 +13,16 @@ namespace GigsNearMe
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            .ConfigureAppConfiguration((context, builder) =>
+            {
+                if (context.HostingEnvironment.IsProduction())
                 {
-                    webBuilder.UseStartup<Startup>();
-                });
+                    builder.AddSystemsManager("/gigsnearme/");
+                }
+            })
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }

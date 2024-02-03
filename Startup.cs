@@ -9,6 +9,8 @@ using GigsNearMe.Data;
 using GigsNearMe.Contracts;
 using GigsNearMe.Repository;
 using AutoMapper;
+using System.Text.Json;
+using System;
 
 namespace GigsNearMe
 {
@@ -80,9 +82,51 @@ namespace GigsNearMe
         }
 
         private void SetDatabaseAndConnectionString(IServiceCollection services)
-        {
-            var connectionString = Configuration.GetConnectionString("Default");
-            services.AddDbContext<GigsNearMeDbContext>(options => options.UseSqlite(connectionString));
+            {
+                var connString = Configuration.GetConnectionString("Default");
+                if (WebHostEnvironment.IsDevelopment())
+                {
+                    //Setting connection string for local Sqlite development database
+                    services.AddDbContext<GigsNearMeDbContext>(options => options.UseSqlite(connString));
+                    return;
+                }
+
+                //Setting connection string for SQL Server in RDS
+
+                const string dbsecretParameterName = "dbsecretsname";
+                try
+                {
+                    var secretsClient = new AmazonSecretsManagerClient();
+                    var response = secretsClient.GetSecretValueAsync(new GetSecretValueRequest
+                    {
+                        SecretId = Configuration[dbsecretParameterName]
+                    }).Result;
+
+                    var dbsecret = JsonSerializer.Deserialize<DbSecret>(response.SecretString, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    var partialConnString = string.Format(connString, dbsecret.Host, dbsecret.Port);
+
+                    var builder = new SqlConnectionStringBuilder(partialConnString)
+                    {
+                        UserID = dbsecret.Username,
+                        Password = dbsecret.Password
+                    };
+
+                    services.AddDbContext<GigsNearMeDbContext>(options => options.UseSqlServer(builder.ConnectionString));
+                }
+                catch (AmazonSecretsManagerException e)
+                {
+                    Console.WriteLine($"Failed to read secret {Configuration[dbsecretParameterName]}, error {e.Message}, inner {e.InnerException.Message}");
+                    throw;
+                }
+                catch (JsonException e)
+                {
+                    Console.WriteLine($"Failed to parse content for secret {Configuration[dbsecretParameterName]}, error {e.Message}");
+                    throw;
+                }
         }
     }
 }
