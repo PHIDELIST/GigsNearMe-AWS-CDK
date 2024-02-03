@@ -29,6 +29,34 @@ namespace GigsNearMeInfra
                         }
                     }
             });
+            var loadBalancer = new ApplicationLoadBalancer(this, "LB", new ApplicationLoadBalancerProps
+            {
+                Vpc = vpc,
+                InternetFacing = true
+            });
+
+            var lbListener = loadBalancer.AddListener("HttpListener", new BaseApplicationListenerProps
+            {
+                Port = 80,
+                Protocol = ApplicationProtocol.HTTP
+            });
+            lbListener.Connections.AllowDefaultPortFromAnyIpv4("Public access to port 80");
+
+            lbListener.AddTargets("ASGTargets", new AddApplicationTargetsProps
+            {
+                Port = 5000, // the port the Kestrel-hosted app will be exposed on
+                Protocol = ApplicationProtocol.HTTP,
+                Targets = new[] { scalingGroup }
+            });
+
+            scalingGroup.ScaleOnRequestCount("DemoLoad", new RequestCountScalingProps
+            {
+                TargetRequestsPerMinute = 10 // enough for demo purposes
+            });
+            new CfnOutput(this, "AppUrl", new CfnOutputProps
+            {
+                Value = $"http://{loadBalancer.LoadBalancerDnsName}"
+            });
         }
     }
 }
