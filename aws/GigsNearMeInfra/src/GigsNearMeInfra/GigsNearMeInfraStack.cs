@@ -9,6 +9,7 @@ namespace GigsNearMeInfra
         internal GigsNearMeInfraStack(Amazon.CDK.Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             // The code that defines your stack goes here
+            //VPC
             var vpc = new Vpc(this, "GigsNearMeVpc", new VpcProps
             {
                 Cidr = "10.0.0.0/16",
@@ -29,6 +30,7 @@ namespace GigsNearMeInfra
                         }
                     }
             });
+            //RDS DB
             const int dbPort = 1433;
             var db = new DatabaseInstance(this, "DB", new DatabaseInstanceProps
             {
