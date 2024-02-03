@@ -29,6 +29,23 @@ namespace GigsNearMeInfra
                         }
                     }
             });
+            const int dbPort = 1433;
+            var db = new DatabaseInstance(this, "DB", new DatabaseInstanceProps
+            {
+                Vpc = vpc,
+                VpcSubnets = new SubnetSelection
+                {
+                    SubnetType = SubnetType.PRIVATE_ISOLATED
+                },
+                Engine = DatabaseInstanceEngine.SqlServerEx(new SqlServerExInstanceEngineProps
+                {
+                    Version = SqlServerEngineVersion.VER_14
+                }),
+                InstanceType = InstanceType.Of(InstanceClass.BURSTABLE2, InstanceSize.MICRO),
+                Port = dbPort,
+                InstanceIdentifier = "gigsnearmedb",
+                BackupRetention = Duration.Seconds(0)
+            });
         }
     }
 }
