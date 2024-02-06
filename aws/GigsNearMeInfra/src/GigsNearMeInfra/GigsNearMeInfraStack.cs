@@ -1,5 +1,7 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.EC2;
+using Amazon.CDK.AWS.SSM;
+using Constructs;
 
 namespace GigsNearMeInfra
 {
@@ -29,6 +31,13 @@ namespace GigsNearMeInfra
                         }
                     }
             });
+
+            new StringParameter(this, "GigsNearMeDbSecretsParameter", new StringParameterProps
+            {
+                ParameterName = "gigsnearme/dbsecretsname",
+                StringValue = db.Secret.SecretName
+                });
+
             //RDS DB
             const int dbPort = 1433;
             var db = new DatabaseInstance(this, "DB", new DatabaseInstanceProps
@@ -46,6 +55,7 @@ namespace GigsNearMeInfra
                 Port = dbPort,
                 InstanceIdentifier = "gigsnearmedb",
                 BackupRetention = Duration.Seconds(0)
+
             });
         }
     }
