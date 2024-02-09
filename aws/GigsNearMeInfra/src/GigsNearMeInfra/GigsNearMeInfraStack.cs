@@ -1,6 +1,7 @@
 using Amazon.CDK;
-using Amazon.CDK.AWS.EC2;
-using Amazon.CDK.AWS.SSM;
+using Amazon.CDK.AWS.
+using Amazon.CDK.AWS.IAM;
+using Amazon.CDK.AWS.SSM
 using Constructs;
 
 namespace GigsNearMeInfra
@@ -31,7 +32,33 @@ namespace GigsNearMeInfra
                         }
                     }
             });
+            var appRole = new Role(this, "InstanceRole", new RoleProps
+            {
+                AssumedBy = new ServicePrincipal("ec2.amazonaws.com"),
+                            ManagedPolicies = new IManagedPolicy[]
+                {
+                    ManagedPolicy.FromAwsManagedPolicyName("AmazonSSMManagedInstanceCore"),
+                    ManagedPolicy.FromAwsManagedPolicyName("service-role/AWSCodeDeployRole")
+                }
+            });
 
+            appRole.AddToPolicy(new PolicyStatement(new PolicyStatementProps
+            {
+                Effect = Effect.ALLOW,
+                Actions = new string[] { "ssm:GetParametersByPath" },
+                Resources = new string[]
+                {
+            Arn.Format(new ArnComponents
+            {
+                Service = "ssm",
+                Resource = "parameter",
+                ResourceName = "gigsnearme/*"
+            }, this)
+                    }
+                }));
+
+                db.Secret.GrantRead(appRole);
+            }
             new StringParameter(this, "GigsNearMeDbSecretsParameter", new StringParameterProps
             {
                 ParameterName = "gigsnearme/dbsecretsname",
